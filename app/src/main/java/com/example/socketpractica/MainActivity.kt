@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         val msg = findViewById<EditText>(R.id.msg)
         val send = findViewById<Button>(R.id.send)
+        val txt = findViewById<TextView>(R.id.textView)
 
         SocketHandler.setSocket()
         SocketHandler.establishConnection()
@@ -27,20 +29,28 @@ class MainActivity : AppCompatActivity() {
         mSocket.connect()
 
         send.setOnClickListener {
-            mSocket.emit("mensaje", msg.text.toString())
-
+            mSocket.emit("mensaje")
 
         }
 
 
-        mSocket.on("connection") {
-            runOnUiThread {
-                Log.d("mensaje", "conectado")
-            }
+        mSocket.on("mensaje") {args->
+            if(args[0] !=null){
+                val message = args[0] as String
+
+                runOnUiThread {
+                    txt.text =  message
                 }
+            }
+
+
+
+
         }
 
 
-            }
 
+
+        }
+    }
 
