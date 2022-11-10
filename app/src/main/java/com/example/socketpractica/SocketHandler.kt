@@ -15,6 +15,7 @@ object SocketHandler {
         }
     }
 
+
     @Synchronized
     fun getSocket(): Socket {
         return mSocket
